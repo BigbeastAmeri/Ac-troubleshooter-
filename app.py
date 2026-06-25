@@ -3,13 +3,18 @@ from openai import OpenAI
 
 api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
+st.set_page_config(page_title="Itech AI", page_icon="🔧", layout="wide")
 
-st.set_page_config(page_title="Itech AI", page_icon="🔧")
 st.title("Itech AI - Electronics Repair Assistant")
-st.caption("Diagnose AC, Fridge, TV & more with AI")
+st.caption("USA-based AI diagnostics for HVAC, Refrigeration, TVs & Home Appliances")
+st.markdown("**⚠️ Disclaimer:** Itech AI provides troubleshooting guidance only. For electrical, gas, or refrigerant work, contact a licensed technician in your state. Use at your own risk.")
+st.divider()
+
 
 user_input = st.text_input("Describe your electronics problem:", key="input_box")
-send_btn = st.button("🔧 Send to Itech AI", type="primary", use_container_width=True)
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
+    send_btn = st.button("🔧 Diagnose My Appliance", type="primary", use_container_width=True)
 
 if send_btn and user_input:
     with st.spinner("Itech AI is diagnosing... 🔧"):
