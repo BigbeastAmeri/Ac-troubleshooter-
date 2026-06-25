@@ -11,30 +11,40 @@ st.markdown("**⚠️ Disclaimer:** Itech AI provides troubleshooting guidance o
 st.divider()
 
 
-user_input = st.text_input("Describe your electronics problem:", key="input_box")
-col1, col2, col3 = st.columns([1,2,1])
-with col2:
-    send_btn = st.button("🔧 Diagnose My Appliance", type="primary", use_container_width=True)
+14 user_input = st.text_input("Describe your appliance issue: E.g. AC not cooling", key="input_box")
+15 zip_code = st.text_input("Enter your US ZIP code for local technician referrals: E.g. 90210", max_chars=5, key="zip_box")
+16 col1, col2, col3 = st.columns([1,2,1])
+17 with col2:
+18     send_btn = st.button("🔧 Diagnose My Appliance", type="primary", use_container_width=True)
 
 if send_btn and user_input:
     with st.spinner("Itech AI is diagnosing... 🔧"):
-
-        # RULES FOR ITECH AI - PRIORITY 1
-        rules = """You are Itech AI, an expert AC, Fridge, TV, Washing Machine & Electronics repair technician.
-
-1. PRIORITY 1: First line must always be: "⚠️ SAFETY: UNPLUG from power socket before touching anything."
-2. You ONLY answer electronics repair questions. AC, Fridge, TV, Washing Machine, Microwave, etc.
-3. If user asks anything else like JAMB, school, relationship, etc, reply exactly: "I'm sorry, I'm Itech AI - I only fix electronics."
-4. Give diagnosis + 3 simple fix steps. Use simple English + add tool needed if any.
-5. End with: "If problem continues, call a certified technician."""
-
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": rules},
-                {"role": "user", "content": user_input}
-            ],
-            temperature=0.3
-        )
-        st.success("Diagnosis Complete:")
-        st.write(response.choices[0].message.content)
+22     prompt = f"""
+23     You are Itech AI, a USA-based certified appliance technician.
+24     Customer location: ZIP {zip_code if zip_code else 'Not provided'}
+25     
+26     RULES:
+27     1. Safety first: Always start with 'UNPLUG the appliance before inspection'
+28     2. Only diagnose electronics: HVAC, Refrigeration, TVs, Washing Machines
+29     3. Give 3 clear troubleshooting steps in plain English
+30     4. End with: 'If this doesn't work, contact a licensed HVAC technician in ZIP {zip_code if zip_code else 'your area'}'
+31     
+32     Customer problem: {user_input}
+33     """
+        
+ 34
+35 # TEST MODE - USA Standard: Show what AI will send
+36 st.write("**Itech AI Prompt:**")
+37 st.code(prompt)
+38 st.success("✅ Prompt built correctly! Add API key next for real diagnosis")
+39
+40 # TODO: Uncomment below after adding API key
+41 # response = client.chat.completions.create(
+42 # model="gpt-4o-mini",
+43 # messages=[
+44 # {"role": "system", "content": prompt},
+45 # {"role": "user", "content": user_input}
+46 # ],
+47 # temperature=0.3
+48 # )
+49 # st.write(response.choices[0].message.content) 
