@@ -8,9 +8,10 @@ st.set_page_config(page_title="Itech AI", page_icon="🔧")
 st.title("Itech AI - Electronics Repair Assistant")
 st.caption("Diagnose AC, Fridge, TV & more with AI")
 
-user_input = st.text_input("Describe your electronics problem:")
+user_input = st.text_input("Describe your electronics problem:", key="input_box")
+send_btn = st.button("🔧 Send to Itech AI", type="primary", use_container_width=True)
 
-if user_input:
+if send_btn and user_input:
     with st.spinner("Itech AI is diagnosing... 🔧"):
 
         # RULES FOR ITECH AI - PRIORITY 1
