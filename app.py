@@ -139,17 +139,17 @@ if st.button("Diagnose Now", type="primary", use_container_width=True) and user_
         c.execute("INSERT INTO logs (timestamp, device, country, voltage, problem, answer) VALUES (?,?,?,?,?,?)",
                   (datetime.now(), device, country, voltage, user_input, answer))
         conn.commit()
-
-# ===== SIDEBAR HISTORY =====
+       # ===== SIDEBAR HISTORY =====
 with st.sidebar:
     st.header("📜 Past Repairs")
     rows = c.execute("SELECT timestamp, device, problem FROM logs ORDER BY id DESC LIMIT 10").fetchall()
-    147     if rows:
-148         for ts, dev, prob in rows:
-149                 st.write(f"**{dev}** - {ts[:16]}")
-150     st.caption(prob[:50] + "...")
-151     else:
-152     st.write("No history yet.")
-153     st.divider()
-154     total_count = c.execute('SELECT COUNT(*) FROM logs').fetchone()[0]
-155     st.metric("Total Diagnoses", total_count)
+    if rows:
+        for ts, dev, prob in rows:
+            st.write(f"**{dev}** - {ts[:16]}")
+            st.caption(prob[:50] + "...")
+    else:
+        st.write("No history yet.")
+        st.divider()
+        total_count = c.execute('SELECT COUNT(*) FROM logs').fetchone()[0]
+        st.metric("Total Diagnoses", total_count)      
+
